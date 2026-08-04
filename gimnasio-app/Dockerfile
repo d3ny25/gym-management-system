@@ -11,13 +11,13 @@ RUN apt-get update \
 
 WORKDIR /var/www/html
 
-COPY composer.json composer.lock ./
+COPY gimnasio-app/composer.json gimnasio-app/composer.lock ./
 RUN composer install --no-interaction --prefer-dist
 
-COPY package.json package-lock.json ./
+COPY gimnasio-app/package.json gimnasio-app/package-lock.json ./
 RUN npm install --ignore-scripts
 
-COPY . .
+COPY gimnasio-app/ ./
 RUN cp .env.example .env \
     && php artisan key:generate \
     && npm run build
