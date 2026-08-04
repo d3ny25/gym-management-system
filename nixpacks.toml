@@ -2,7 +2,7 @@
 NIXPACKS_PATH = "gimnasio-app"
 
 [phases.setup]
-nixPkgs = ["php83", "php83Packages.composer", "nodejs-22_x"]
+nixPkgs = ["php83", "php83Packages.composer", "nodejs-18_x"]
 
 [phases.install]
 cmds = [
