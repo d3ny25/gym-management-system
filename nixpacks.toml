@@ -1,0 +1,17 @@
+[variables]
+NIXPACKS_PATH = "gimnasio-app"
+
+[phases.setup]
+nixPkgs = ["php83", "php83Packages.composer", "nodejs_22"]
+
+[phases.install]
+cmds = [
+  "cd gimnasio-app && composer install --no-interaction --prefer-dist",
+  "cd gimnasio-app && npm install --ignore-scripts"
+]
+
+[phases.build]
+cmds = ["cd gimnasio-app && npm run build"]
+
+[start]
+cmd = "cd gimnasio-app && php artisan serve --host=0.0.0.0 --port=$PORT"
