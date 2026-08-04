@@ -11,7 +11,7 @@ RUN apt-get update \
 
 WORKDIR /var/www/html/gimnasio-app
 
-COPY gimnasio-app/ ./gimnasio-app/
+COPY gimnasio-app/ ./
 WORKDIR /var/www/html/gimnasio-app
 
 ENV COMPOSER_ALLOW_SUPERUSER=1
