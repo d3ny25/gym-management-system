@@ -15,12 +15,10 @@ class Cliente extends Model
         'apellido_paterno',
         'apellido_materno',
         'fecha_nacimiento',
-        'sexo',
         'telefono',
         'correo',
         'direccion'
-        
-        ];
+    ];
 
     public $timestamps = false;
 
