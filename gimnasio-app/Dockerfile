@@ -9,7 +9,7 @@ RUN apt-get update \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-WORKDIR /var/www/html
+WORKDIR /var/www/html/gimnasio-app
 
 COPY gimnasio-app/composer.json gimnasio-app/composer.lock ./
 RUN composer install --no-interaction --prefer-dist
