@@ -29,13 +29,20 @@ class AppServiceProvider extends ServiceProvider
             }
 
             URL::forceScheme('https');
+
+            $trustedHeaders = defined(SymfonyRequest::class.'::HEADER_X_FORWARDED_ALL')
+                ? SymfonyRequest::HEADER_X_FORWARDED_ALL
+                : (
+                    SymfonyRequest::HEADER_X_FORWARDED_FOR |
+                    SymfonyRequest::HEADER_X_FORWARDED_HOST |
+                    SymfonyRequest::HEADER_X_FORWARDED_PROTO |
+                    SymfonyRequest::HEADER_X_FORWARDED_PORT |
+                    SymfonyRequest::HEADER_X_FORWARDED_PREFIX
+                );
+
             SymfonyRequest::setTrustedProxies(
                 ['0.0.0.0/0', '::/0'],
-                SymfonyRequest::HEADER_X_FORWARDED_FOR |
-                SymfonyRequest::HEADER_X_FORWARDED_HOST |
-                SymfonyRequest::HEADER_X_FORWARDED_PROTO |
-                SymfonyRequest::HEADER_X_FORWARDED_PORT |
-                SymfonyRequest::HEADER_X_FORWARDED_PREFIX
+                $trustedHeaders
             );
         }
     }
