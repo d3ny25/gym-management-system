@@ -17,7 +17,15 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', env('DATABASE_URL') ? 'mysql' : 'sqlite'),
+    'default' => (function () {
+        $configuredConnection = env('DB_CONNECTION');
+
+        if (!empty($configuredConnection) && $configuredConnection !== 'sqlite') {
+            return $configuredConnection;
+        }
+
+        return env('DATABASE_URL') ? 'mysql' : 'sqlite';
+    })(),
 
     /*
     |--------------------------------------------------------------------------
