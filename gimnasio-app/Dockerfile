@@ -21,8 +21,8 @@ ENV PORT=8000
 RUN composer install --no-interaction --prefer-dist
 RUN npm install --ignore-scripts
 
-RUN cp .env.example .env \
-    && php artisan key:generate \
+RUN if [ ! -f .env ]; then cp .env.example .env; fi \
+    && php artisan key:generate --force \
     && npm run build
 
 EXPOSE 8000
