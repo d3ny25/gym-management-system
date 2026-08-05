@@ -16,6 +16,7 @@ COPY gimnasio-app/ ./
 WORKDIR /var/www/html/gimnasio-app
 
 ENV COMPOSER_ALLOW_SUPERUSER=1
+ENV PORT=8000
 
 RUN composer install --no-interaction --prefer-dist
 RUN npm install --ignore-scripts
@@ -26,4 +27,4 @@ RUN cp .env.example .env \
 
 EXPOSE 8000
 
-CMD ["sh", "-c", "php -S 0.0.0.0:8000 -t public"]
+CMD ["sh", "-c", "php artisan serve --host=0.0.0.0 --port=${PORT:-8000}"]
