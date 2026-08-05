@@ -22,9 +22,9 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         if ($this->app->environment('production') || env('FORCE_HTTPS', false)) {
-            $appUrl = env('APP_URL', config('app.url'));
+            $appUrl = env('APP_URL');
 
-            if ($appUrl) {
+            if (!empty($appUrl)) {
                 URL::forceRootUrl($appUrl);
             }
 

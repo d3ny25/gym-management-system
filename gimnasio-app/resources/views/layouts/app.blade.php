@@ -4,6 +4,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Gimnasio - @yield('title', 'Panel')</title>
+    @if(app()->environment('production'))
+        <link rel="preload" href="{{ asset('build/manifest.json') }}" as="fetch" crossorigin>
+    @endif
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-[#F8FAFC] text-[#1F2937] min-h-screen md:flex">
