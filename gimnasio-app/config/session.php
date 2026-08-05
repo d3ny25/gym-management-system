@@ -18,7 +18,7 @@ return [
     |
     */
 
-    'driver' => env('SESSION_DRIVER', (env('APP_ENV') === 'production' || (env('DB_CONNECTION') && env('DB_CONNECTION') !== 'sqlite')) ? 'file' : 'database'),
+    'driver' => env('SESSION_DRIVER', 'file'),
 
     /*
     |--------------------------------------------------------------------------
