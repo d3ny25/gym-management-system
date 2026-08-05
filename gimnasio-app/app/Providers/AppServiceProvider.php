@@ -21,6 +21,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        $this->configureDatabaseConnection();
+
         if ($this->app->environment('production') || env('FORCE_HTTPS', false)) {
             $requestHost = $this->app['request']->getSchemeAndHttpHost();
             $appUrl = env('APP_URL');
@@ -44,6 +46,46 @@ class AppServiceProvider extends ServiceProvider
                 ['0.0.0.0/0', '::/0'],
                 $trustedHeaders
             );
+        }
+    }
+
+    protected function configureDatabaseConnection(): void
+    {
+        $configuredConnection = env('DB_CONNECTION');
+        $databaseUrl = env('DATABASE_URL');
+        $dbHost = env('DB_HOST');
+        $mysqlHost = env('MYSQLHOST');
+
+        $hasExternalDatabase = !empty($databaseUrl) || !empty($dbHost) || !empty($mysqlHost);
+
+        $defaultConnection = 'sqlite';
+
+        if ($hasExternalDatabase) {
+            $defaultConnection = !empty($configuredConnection) && $configuredConnection !== 'sqlite'
+                ? $configuredConnection
+                : 'mysql';
+        } elseif (!empty($configuredConnection) && $configuredConnection !== 'sqlite') {
+            $defaultConnection = $configuredConnection;
+        }
+
+        $this->app['config']->set('database.default', $defaultConnection);
+
+        if ($defaultConnection === 'mysql' || $defaultConnection === 'mariadb') {
+            $this->app['config']->set('database.connections.mysql.host', env('DB_HOST', env('MYSQLHOST', '127.0.0.1')));
+            $this->app['config']->set('database.connections.mysql.port', env('DB_PORT', env('MYSQLPORT', '3306')));
+            $this->app['config']->set('database.connections.mysql.database', (function () {
+                $database = env('DB_DATABASE');
+                $mysqlDatabase = env('MYSQLDATABASE');
+
+                if (!empty($database) && $database !== ':memory:' && $database !== 'database.sqlite') {
+                    return $database;
+                }
+
+                return !empty($mysqlDatabase) ? $mysqlDatabase : 'laravel';
+            })());
+            $this->app['config']->set('database.connections.mysql.username', env('DB_USERNAME', env('MYSQLUSER', 'root')));
+            $this->app['config']->set('database.connections.mysql.password', env('DB_PASSWORD', env('MYSQLPASSWORD', '')));
+            $this->app['config']->set('database.connections.mysql.url', env('DB_URL', env('DATABASE_URL')));
         }
     }
 }
