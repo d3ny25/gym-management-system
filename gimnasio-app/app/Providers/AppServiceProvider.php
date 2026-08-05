@@ -22,12 +22,12 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         if ($this->app->environment('production') || env('FORCE_HTTPS', false)) {
+            $requestHost = $this->app['request']->getSchemeAndHttpHost();
             $appUrl = env('APP_URL');
+            $shouldUseRequestHost = empty($appUrl)
+                || in_array(strtolower(trim($appUrl)), ['http://localhost', 'https://localhost', 'localhost', 'http://127.0.0.1', 'https://127.0.0.1'], true);
 
-            if (!empty($appUrl)) {
-                URL::forceRootUrl($appUrl);
-            }
-
+            URL::forceRootUrl($shouldUseRequestHost ? $requestHost : $appUrl);
             URL::forceScheme('https');
 
             $trustedHeaders = defined(SymfonyRequest::class.'::HEADER_X_FORWARDED_ALL')

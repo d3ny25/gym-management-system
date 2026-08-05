@@ -5,9 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Gimnasio - @yield('title', 'Panel')</title>
     @if(app()->environment('production'))
-        <link rel="preload" href="{{ asset('build/manifest.json') }}" as="fetch" crossorigin>
+        <link rel="stylesheet" href="{{ asset('build/assets/app-C0uu6LLs.css') }}">
+        <script type="module" src="{{ asset('build/assets/app-BvRk9kiK.js') }}"></script>
+    @else
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
     @endif
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-[#F8FAFC] text-[#1F2937] min-h-screen md:flex">
     @include('components.sidebar')
