@@ -19,12 +19,20 @@ return [
 
     'default' => (function () {
         $configuredConnection = env('DB_CONNECTION');
+        $databaseUrl = env('DATABASE_URL');
+        $dbHost = env('DB_HOST');
+
+        if (!empty($databaseUrl) || !empty($dbHost)) {
+            return !empty($configuredConnection) && $configuredConnection !== 'sqlite'
+                ? $configuredConnection
+                : 'mysql';
+        }
 
         if (!empty($configuredConnection) && $configuredConnection !== 'sqlite') {
             return $configuredConnection;
         }
 
-        return env('DATABASE_URL') ? 'mysql' : 'sqlite';
+        return 'sqlite';
     })(),
 
     /*

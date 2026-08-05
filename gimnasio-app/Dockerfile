@@ -17,12 +17,16 @@ WORKDIR /var/www/html/gimnasio-app
 
 ENV COMPOSER_ALLOW_SUPERUSER=1
 ENV PORT=8000
+ENV APP_ENV=production
+ENV APP_DEBUG=false
 
 RUN composer install --no-interaction --prefer-dist
 RUN npm install --ignore-scripts
 
-RUN if [ ! -f .env ]; then cp .env.example .env; fi \
+RUN rm -f .env bootstrap/cache/config.php \
+    && cp .env.example .env \
     && php artisan key:generate --force \
+    && php artisan config:clear \
     && npm run build
 
 EXPOSE 8000
