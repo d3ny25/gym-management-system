@@ -12,7 +12,7 @@ RUN apt-get update \
 
 WORKDIR /var/www/html/gimnasio-app
 
-COPY . .
+COPY gimnasio-app/ ./
 
 ENV COMPOSER_ALLOW_SUPERUSER=1
 ENV PORT=8000
