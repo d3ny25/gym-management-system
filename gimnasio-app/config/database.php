@@ -16,26 +16,7 @@ return [
     |
     */
 
-    'default' => (function () {
-        $configuredConnection = env('DB_CONNECTION');
-        $databaseUrl = env('DATABASE_URL');
-        $dbHost = env('DB_HOST');
-        $mysqlHost = env('MYSQLHOST');
-
-        $hasExternalDatabase = !empty($databaseUrl) || !empty($dbHost) || !empty($mysqlHost);
-
-        if ($hasExternalDatabase) {
-            return !empty($configuredConnection) && $configuredConnection !== 'sqlite'
-                ? $configuredConnection
-                : 'mysql';
-        }
-
-        if (!empty($configuredConnection) && $configuredConnection !== 'sqlite') {
-            return $configuredConnection;
-        }
-
-        return 'sqlite';
-    })(),
+    'default' => env('DB_CONNECTION', 'sqlite'),
 
     /*
     |--------------------------------------------------------------------------
@@ -67,16 +48,7 @@ return [
             'url' => env('DB_URL', env('DATABASE_URL')),
             'host' => env('DB_HOST', env('MYSQLHOST', '127.0.0.1')),
             'port' => env('DB_PORT', env('MYSQLPORT', '3306')),
-            'database' => (function () {
-                $database = env('DB_DATABASE');
-                $mysqlDatabase = env('MYSQLDATABASE');
-
-                if (!empty($database) && $database !== ':memory:' && $database !== 'database.sqlite') {
-                    return $database;
-                }
-
-                return !empty($mysqlDatabase) ? $mysqlDatabase : 'laravel';
-            })(),
+            'database' => env('DB_DATABASE', env('MYSQLDATABASE', 'laravel')),
             'username' => env('DB_USERNAME', env('MYSQLUSER', 'root')),
             'password' => env('DB_PASSWORD', env('MYSQLPASSWORD', '')),
             'unix_socket' => env('DB_SOCKET', ''),
