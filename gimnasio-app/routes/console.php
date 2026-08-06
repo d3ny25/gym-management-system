@@ -2,7 +2,6 @@
 
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
-use Throwable;
 
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
